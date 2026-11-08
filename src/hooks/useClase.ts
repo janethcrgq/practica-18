@@ -18,7 +18,7 @@ export function useClase(id: number) {
       .catch((e) => { if (vigente) setError(mensajeDeError(e, 'No se pudo obtener los detalles de la clase.')); })
       .finally(() => { if (vigente) setCargando(false); });
     return () => { vigente = false; }; // la limpieza
-  }, [intento]);
+  }, [id, intento]);
 
   function reintentar() {
     setCargando(true);

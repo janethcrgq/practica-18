@@ -1,3 +1,51 @@
+# Práctica 15
+
+Capturas en `evidencias/practica15/`.
+
+## Ejercicio 1: el router y el catálogo
+
+### ¿Por qué el 404 sí tiene encabezado y pie?
+
+Porque la ruta `*` (la del 404) está definida como hija de la ruta de layout. El `<Layout>`
+siempre pinta el `<Encabezado>` y el `<PiePagina>`, y en medio tiene un `<Outlet />`, que es
+el hueco donde React Router pinta la ruta hija que coincide con la URL. Cuando la dirección
+no existe, la ruta que coincide es `*`, así que `<NoEncontrado>` se pinta dentro del
+`<Outlet />` y el encabezado y el pie se quedan.
+
+### ¿Qué cambia en la pestaña Red si usas `<a href>` en lugar de `Link`?
+
+Con `Link`, React Router intercepta el clic, cambia la URL sin recargar y solo pinta la nueva
+ruta. En la pestaña Red solo aparece lo nuevo: la petición a la API con la clase y el código
+de la página de detalle (6 peticiones en `p15-red-link.png`).
+
+Con `<a href>`, el navegador hace una navegación completa: vuelve a pedir el documento HTML
+(la primera fila es de tipo *document*), todos los archivos de JavaScript, el CSS, el logo y
+otra vez las peticiones a la API (41 peticiones en `p15-red-a-href.png`). La aplicación
+arranca desde cero y se pierde el estado que estaba en memoria.
+
+## Ejercicio 2: el detalle de una clase
+
+### ¿En qué tipo de dato llega el id de la URL y qué pasa si no lo conviertes?
+
+`useParams` siempre regresa texto (`string`, o `undefined` si el parámetro no existe), porque
+la URL es texto: en `/clases/1` el id llega como `"1"`, no como `1`. Si no se convierte,
+TypeScript marca error al pasarlo a `useClase(id: number)`, y las comparaciones con números
+fallan (`"1" === 1` es `false`). Por eso se convierte con `Number(id)`. Si la URL trae algo
+que no es número, como `/clases/abc`, el resultado es `NaN` y la API responde con error.
+
+### ¿Qué pasa al ir de `/clases/1` a `/clases/2` si el id no está en las dependencias del efecto?
+
+Como las dos direcciones usan la misma ruta, React Router no desmonta `<PaginaClase>`: solo
+le cambia el parámetro. Si el efecto no tiene el `id` en sus dependencias, no se vuelve a
+ejecutar, así que no se pide la clase 2 y la página sigue mostrando la clase 1 aunque la URL
+diga `/clases/2`. Con `[id, intento]` el efecto se repite cada vez que cambia el id, pide la
+clase nueva y la limpieza (`vigente = false`) descarta la respuesta de la clase anterior si
+llega tarde.
+
+# Práctica 18
+
+Capturas en `evidencias/`.
+
 ## Ejercicio 1: partir por ruta y medir
 
 ### ¿Cuánto se ahorró y por qué el ahorro es pequeño en esta aplicación?

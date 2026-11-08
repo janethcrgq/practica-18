@@ -30,7 +30,7 @@ export default function PaginaClases(){
               <div className="tarjeta-clase__cuerpo">
                 <span className="etiqueta etiqueta--fuerza">{c.categoria}</span>
                 <span className="tarjeta-clase__titulo">{c.nombre}</span>
-                <span className="tarjeta-clase__meta">{c.duracionMin}</span>
+                <span className="tarjeta-clase__meta">{c.duracionMin} min</span>
               </div>
             </Link>
           ))
